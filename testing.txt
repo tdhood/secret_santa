@@ -1,0 +1,8 @@
+create a user without first name
+create a user without a wishlist
+edit a user without a wishlist
+edit a user with a too short wishlist
+
+try to see your secret santa's page
+try to see another users page
+try to see another users secret santa
