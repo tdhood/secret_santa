@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="name">
+        <h1>Welcome back, {{ g.user.first_name}}!</h1>
+    </div>
+    <br><br>
+
+<div class=""col-lg-6 col-md-8 col-sm-12">
+    <h3>Events</h3>
+    <ul class="card list-group" id="events">
+        {% for evt in events %}
+        <li class="list-group-item">
+            <div class="event-area">
+                <a href="/{{g.user.id}}/Events/{{evt.id}}" class="event-link">
+                    <p>{{evt.title}}</p>
+                    <p>Event Owner: {{evt.user.first_name}}</p>
+                </a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+{% endblock %}

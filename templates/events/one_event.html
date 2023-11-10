@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <h1>{{event.title}}!</h1>
+    <h3>My Wishlist:</h3>
+
+    {% for item in wishlist_items %}
+    <div class="card wishlist-item">
+        <form method="POST" id="wishlist-item-form">
+
+            {{ wishlist_items_form.hidden_tag() }}
+
+            {% for field in wishlist_items_form if field.widget.input_type != 'hidden' %}
+            
+                <p>{{field.label.text}}:</p>
+                {% if item[field.label.text.lower()] != 'None' %}
+                    {{ field(placeholder=item[field.label.text.lower()], class="form-control") }}
+                {% else %}
+                    {{ field(placeholder=field.label.text, class="form-control") }}
+                {% endif %}
+            {% endfor %}
+            <h5>{{item.gift}}</h5>
+            <h5>{{item.url}}</h5>
+            <h5>{{item.image}}</h5>
+            <button class="btn btn">Save</button>
+        </form>
+    </div>
+    {% endfor %}
+    
+    
+</div>
+
+{% endblock %} 
