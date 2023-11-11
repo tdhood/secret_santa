@@ -7,54 +7,60 @@
     <div class="card wishlist-notes">
         <p>{{wishlist.notes}}</p>
     </div>
-    
+
     <br><br>
     <h3>My Wishlist:</h3>
 
     {% for item in wishlist_items %}
     <div class="card wishlist-item">
-        <form method="PATCH" id="wishlist-item-edit-form">
+        <form id="wishlist-item-edit-form">
 
-            {{ wishlist_items_form.hidden_tag() }}
+            {{ g.csrf_form.hidden_tag() }}
 
             {% for field in wishlist_items_form if field.widget.input_type != 'hidden' %}
-            
-                <p>{{field.label.text}}:</p>
-                {% if item[field.label.text.lower()] != 'None' %}
-                    {% for error in field.errors %}
-                        <span class="text-danger">{{ error }}</span>
-                    {% endfor %}
 
-                    {{ field(placeholder=item[field.label.text.lower()], class="form-control") }}
-                {% else %}
-                    {{ field(placeholder=field.label.text, class="form-control") }}
-                {% endif %}
+            <p>{{field.label.text}}:</p>
+            {% if item[field.label.text.lower()] != 'None' %}
+
+            wishlist id = {{wishlist.id}}
+            wish list item id = {{item.id}}
+            {{ field(value=item[field.label.text.lower()], class="form-control") }}
+            {% else %}
+            {{ field(placeholder=field.label.text, class="form-control") }}
+            {% endif %}
             {% endfor %}
-            <button class="button" class="btn btn-secondary">Save</button>
+
+            <button class="btn btn-secondary" formaction="/{{user_id}}/Events/{{event_id}}"
+                formmethod="PATCH">Save</button>
+            <button class="btn btn-secondary" formmethod="POST"
+                formaction="/{{user_id}}/Events/{{event_id}}/{{wishlist.id}}/{{item.id}}/delete">Delete</button>
+
+
         </form>
+
     </div>
     <br><br>
     {% endfor %}
-    
+
     <div class="card add_wishlist_item">
         <form method="POST" id="wishlist-item-add-form">
-            {{ wishlist_items_form.hidden_tag() }}
+            {{ g.csrf_form.hidden_tag() }}
 
             <h3>Add a new gift option!</h3>
             {% for field in wishlist_items_form if field.widget.input_type != 'hidden' %}
             <p>{{field.label.text}}:</p>
-                {% for error in field.errors %}
-                    <span class="text-danger">{{ error }}</span>
-                {% endfor %}
-                {{ field(placeholder=field.label.text, class="form-control") }}
+            {% for error in field.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            {{ field(placeholder=field.label.text, class="form-control") }}
             {%endfor%}
             <button class="button" class="btn btn-secondary">Add</button>
         </form>
 
     </div>
-    
+
     <br><br>
-    
+
 </div>
 
-{% endblock %} 
+{% endblock %}

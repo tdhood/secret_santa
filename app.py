@@ -266,7 +266,7 @@ def edit_event(user_id, event_id):
 # def edit_event_status
 
 
-@app.get("/<int:user_id>/Events/<int:event_id>")
+@app.route("/<int:user_id>/Events/<int:event_id>", methods=['GET', "POST", "DELETE"])
 def show_user_one_event(user_id, event_id):
     """shows a user event info
 
@@ -395,41 +395,58 @@ def edit_wishlist(user_id, event_id, wishlist_id):
     return jsonify(wishlist=serialized)
 
 
-@app.patch(
-    "/<int:user_id>/Events/<int:event_id>/<int:wishlist_id>/<int:wishlist_item_id>"
+@app.post(
+    "/<int:user_id>/Events/<int:event_id>/<int:wishlist_id>/<int:wishlist_item_id>/edit"
 )
 def edit_wishlist_item(user_id, event_id, wishlist_id, wishlist_item_id):
     """Edit wishlist items"""
 
     wishlist_item = Wishlist_Item.query.get_or_404(wishlist_item_id)
 
+    wishlist_item_form = WishlistItemForm(obj=wishlist_item)
+
     wishlist_item.gift = request.json.get("gift", wishlist_item.gift)
     wishlist_item.url = request.json.get("url", wishlist_item.url)
     wishlist_item.image = request.json.get("image", wishlist_item.image)
     wishlist_item.notes = request.json.get("notes", wishlist_item.notes)
 
-    db.session.add(wishlist_item)
-    db.session.commit()
+    if wishlist_item_form.validate_on_submit():
+        wishlist_item.gift = wishlist_item_form.gift.data
+        wishlist_item.url = wishlist_item_form.url.data
+        wishlist_item.image = wishlist_item_form.image.data
+        wishlist_item.notes = wishlist_item_form.notes.data
+
+
+        db.session.add(wishlist_item)
+        db.session.commit()
 
     serialized = wishlist_item.serialize()
 
     return jsonify(wishlist_item=serialized)
 
 
-@app.delete(
-    "/<int:user_id>/Events/<int:event_id>/<int:wishlist_id>/<int:wishlist_item_id>"
+@app.post(
+    "/<int:user_id>/Events/<int:event_id>/<int:wishlist_id>/<int:wishlist_item_id>/delete"
 )
 def delete_wishlist_item(user_id, event_id, wishlist_id, wishlist_item_id):
     """delete wishlist items"""
     # NOTE: check that user_id is the same as the wishlist_id
 
     wishlist_item = Wishlist_Item.query.get_or_404(wishlist_item_id)
+    
+    form = CSRFProtectForm()
+    
+    if form.validate_on_submit():
+        db.session.delete(wishlist_item)
+        db.session.commit()
 
-    db.session.delete(wishlist_item)
-    db.session.commit()
+        return redirect(f"/{user_id}/Events/{event_id}")
+        
+    else:
+        print('erroring')
 
-    return jsonify(deleted=wishlist_item_id)
-
+###########################################################################
+# Homepage
 
 @app.get("/")
 def homepage():
