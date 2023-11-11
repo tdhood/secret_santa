@@ -266,7 +266,7 @@ def edit_event(user_id, event_id):
 # def edit_event_status
 
 
-@app.route("/<int:user_id>/Events/<int:event_id>", methods=["GET", "POST"])
+@app.get("/<int:user_id>/Events/<int:event_id>")
 def show_user_one_event(user_id, event_id):
     """shows a user event info
 
@@ -299,6 +299,8 @@ def show_user_one_event(user_id, event_id):
         Wishlist_Item.wishlist_id == wishlist.id
     ).all()
 
+    wishlist_items_form = WishlistItemForm()
+
     # gift = request.json["gift"] or None
     # url = request.json["url"] or None
     # image = request.json["image"] or None
@@ -328,6 +330,7 @@ def show_user_one_event(user_id, event_id):
     return render_template(
         "events/one_event.html",
         user_id=user_id,
+        event_id=event_id,
         event=event,
         wishlist=wishlist,
         # wishlist_form=wishlist_form,
@@ -352,20 +355,28 @@ def add_wishlist_item(user_id, event_id):
         .first()
     )
 
-    gift = request.json["gift"] or None
-    url = request.json["url"] or None
-    image = request.json["image"] or None
+    wishlist_items_form = WishlistItemForm()
+
+    gift = wishlist_items_form.gift.data or None
+    url = wishlist_items_form.url.data or None
+    image = wishlist_items_form.image.data or None
+    notes = wishlist_items_form.image.data or None
 
     new_wishlist_item = Wishlist_Item(
-        wishlist_id=wishlist.id, gift=gift, url=url, image=image
+        wishlist_id=wishlist.id, gift=gift, url=url, image=image, notes=notes
     )
 
     db.session.add(new_wishlist_item)
     db.session.commit()
 
-    serialized_wishlist_item = new_wishlist_item.serialize()
-
-    return jsonify(wishlist_item=serialized_wishlist_item)
+    return render_template(
+        "events/one_event.html",
+        user_id=user_id,
+        event_id=event_id,
+        event=event,
+        wishlist=wishlist,
+        wishlist_items_form=wishlist_items_form
+    )
 
 
 @app.patch("/<int:user_id>/Events/<int:event_id>/<int:wishlist_id>")
