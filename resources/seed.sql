@@ -1,17 +1,17 @@
 INSERT into users 
 (email, username, first_name, password, phone_number) 
 VALUES 
-("user1@email.com", "user1", "one", "password1", "111-111-1111");
+("user1@email.com", "user1", "one", "$2b$12$.DB4q/p07WIkr.Pzq59gU.ulYADUXpghBFX2I6pami4CnkFmSmkgC", "111-111-1111");
 
 INSERT into users 
 (email, username, first_name, password, phone_number) 
 VALUES 
-("user2@email.com", "user2", "two", "password2", "222-222-2222");
+("user2@email.com", "user2", "two", "$2b$12$v0vILkL55i7FUvTLUS/iTebcuztQr8b0eBniJkEIMez03YaWmKyGq", "222-222-2222");
 
 INSERT into users 
 (email, username, first_name, password, phone_number) 
 VALUES 
-("user3@email.com", "user3", "three", "password3", "333-333-3333");
+("user3@email.com", "user3", "three", "$2b$12$/OwV1RlU2XVnDGo3grNvqe97TJcD.korkJehmP2.lawcx2nfrHKOS", "333-333-3333");
 
 INSERT into events 
 (owner, title, deadline, is_event_live, is_santa_picked)
@@ -114,19 +114,19 @@ VALUES
 (5, "three's food");
 
 INSERT into wishlist_items
-(wishlist_id, gift, url)
+(wishlist_id, gift, url, notes)
 VALUES
-(1, "hat", "hats.com");
+(1, "hat", "hats.com", "large");
 
 INSERT into wishlist_items
-(wishlist_id, gift, url)
+(wishlist_id, gift, url, notes)
 VALUES
-(1, "red gloves", "gloves-r-us.com");
+(1, "red gloves", "gloves-r-us.com", "medium");
 
 INSERT into wishlist_items
-(wishlist_id, gift, url)
+(wishlist_id, gift, url, notes)
 VALUES
-(2, "soccer ball", "sports-shop.com");
+(2, "soccer ball", "sports-shop.com", "size 5");
 
 INSERT into wishlist_items
 (wishlist_id, gift, url)

@@ -28,25 +28,12 @@
 
       <ul class="nav navbar-nav navbar-right">
 
-        <!-- {% block searchbox %}
-        <li>
-          <form class="navbar-form navbar-end" action="/users">
-            <input name="q" class="form-control" placeholder="Search Warbler" aria-label="Search" id="search">
-            <button class="btn btn-default">
-              <span class="fa fa-search"></span>
-            </button>
-          </form>
-        </li>
-        {% endblock %} -->
-
         {% if not g.user %}
         <li><a href="/signup">Sign up</a></li>
         <li><a href="/login">Log in</a></li>
         {% else %}
         <li>
-          <a href="/users/{{ g.user.id }}">
-            <img src="{{ g.user.image_url }}" alt="{{ g.user.username }}">
-          </a>
+          <a href="/{{ g.user.id }}/events"></a>
         </li>
         <form>
           {{ g.csrf_form.hidden_tag() }}

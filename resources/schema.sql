@@ -57,6 +57,7 @@ Create Table wishlist_items (
     gift TEXT,
     url TEXT,
     image TEXT,
+    notes TEXT,
     FOREIGN KEY (wishlist_id) REFERENCES wishlist(id)
 );
 
