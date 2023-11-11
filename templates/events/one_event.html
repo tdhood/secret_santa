@@ -30,8 +30,8 @@
             {% endif %}
             {% endfor %}
 
-            <button class="btn btn-secondary" formaction="/{{user_id}}/Events/{{event_id}}"
-                formmethod="PATCH">Save</button>
+            <button class="btn btn-secondary" formaction="/{{user_id}}/Events/{{event_id}}/{{wishlist.id}}/{{item.id}}/edit"
+                formmethod="POST">Save</button>
             <button class="btn btn-secondary" formmethod="POST"
                 formaction="/{{user_id}}/Events/{{event_id}}/{{wishlist.id}}/{{item.id}}/delete">Delete</button>
 

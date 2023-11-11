@@ -405,10 +405,7 @@ def edit_wishlist_item(user_id, event_id, wishlist_id, wishlist_item_id):
 
     wishlist_item_form = WishlistItemForm(obj=wishlist_item)
 
-    wishlist_item.gift = request.json.get("gift", wishlist_item.gift)
-    wishlist_item.url = request.json.get("url", wishlist_item.url)
-    wishlist_item.image = request.json.get("image", wishlist_item.image)
-    wishlist_item.notes = request.json.get("notes", wishlist_item.notes)
+    form = CSRFProtectForm()
 
     if wishlist_item_form.validate_on_submit():
         wishlist_item.gift = wishlist_item_form.gift.data
@@ -416,13 +413,12 @@ def edit_wishlist_item(user_id, event_id, wishlist_id, wishlist_item_id):
         wishlist_item.image = wishlist_item_form.image.data
         wishlist_item.notes = wishlist_item_form.notes.data
 
+        if form.validate_on_submit():
+            db.session.add(wishlist_item)
+            db.session.commit()
 
-        db.session.add(wishlist_item)
-        db.session.commit()
 
-    serialized = wishlist_item.serialize()
-
-    return jsonify(wishlist_item=serialized)
+    return redirect(f"/{user_id}/Events/{event_id}")
 
 
 @app.post(
